@@ -360,51 +360,49 @@
 
 
 /* ==========================================================
-   SUBMIT BUTTON — HELVETICA
+   SUBMIT BUTTON
 ========================================================== */
 
 .contact-submit {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 
-  gap: 30px;
+  width: fit-content;
+  min-width: 210px;
 
-  width: 100%;
+  padding: 17px 26px;
 
-  padding: 22px 0;
-
-  border: 0;
-  border-top: 1px solid var(--ink);
-  border-bottom: 1px solid var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 0;
 
   background: transparent;
   color: var(--ink);
 
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: .12em;
 
+  text-align: center;
   cursor: pointer;
+
+  transition:
+    border-color .3s ease,
+    background-color .3s ease,
+    color .3s ease;
 }
 
-.contact-submit span:last-child {
-  font-size: 22px;
-  font-weight: 400;
-
-  transition: transform .3s var(--ease);
-}
-
-.contact-submit:hover span:last-child {
-  transform: translate(5px, -5px);
+.contact-submit:hover {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
 }
 
 .contact-submit:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 5px;
 }
-
 
 /* STATUS MESSAGE */
 
@@ -523,10 +521,6 @@
 .contact-return {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-
-  gap: 65px;
-  min-width: 250px;
 
   padding: 17px 0;
 
@@ -713,7 +707,6 @@
 
 @media (prefers-reduced-motion: reduce) {
 
-  .contact-submit span:last-child,
   .contact-email-link {
     transition: none;
   }

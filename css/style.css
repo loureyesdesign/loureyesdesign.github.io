@@ -756,10 +756,7 @@ body,
 }
 
 
-/* Individual text reveals */
-
 .living-featured .section-top,
-.living-featured .section-desc,
 .living-featured .gallery-bottom {
   opacity: 0;
 }
@@ -772,6 +769,7 @@ body,
 .gallery-viewport {
   position: relative;
   overflow: hidden;
+  touch-action: pan-y;
 
   opacity: 1;
 }
@@ -809,7 +807,9 @@ body,
   align-items: end;
   gap: 30px;
 
-  padding-bottom: 18px;
+  padding-bottom: 24px;
+  margin-bottom: 36px;
+
   border-bottom: 1px solid var(--line);
 }
 
@@ -832,23 +832,6 @@ body,
   letter-spacing: -.03em;
 }
 
-.section-desc {
-  display: flex;
-  justify-content: space-between;
-  gap: 30px;
-
-  padding: 18px 0 24px;
-}
-
-.section-desc p {
-  max-width: 330px;
-  margin: 0;
-
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.7;
-}
-
 
 /* ==========================================================
    18. FEATURED CAROUSEL
@@ -862,7 +845,7 @@ body,
 }
 
 .gallery-card {
-  flex: 0 0 clamp(260px, 38svh, 400px);
+  flex: 0 0 clamp(280px, 42svh, 440px);
   min-width: 0;
 
   cursor: pointer;
@@ -926,54 +909,83 @@ body,
 
 .gallery-bottom {
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
 
-  padding: 46px 0 18px;
+  padding: 30px 0 18px;
 
   border-bottom: 1px solid var(--line);
 }
 
 .gallery-counter {
-  font-size: clamp(60px, 8vw, 110px);
-  font-weight: 300;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
 
-  letter-spacing: -.1em;
-  line-height: .7;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: .04em;
+  line-height: 1;
 }
 
 .gallery-counter strong {
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .gallery-counter span {
-  font-size: 17px;
   color: var(--muted);
-  letter-spacing: 0;
+  font-size: inherit;
+  letter-spacing: inherit;
 }
 
 .gallery-arrows {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
 }
 
 .gallery-arrows button {
-  background: none;
-  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  font-size: 22px;
-  padding: 10px 23px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink);
+
+  cursor: pointer;
 
   transition:
     background-color .3s ease,
-    color .3s ease;
+    color .3s ease,
+    opacity .3s ease;
 }
 
-.gallery-arrows button:hover {
+.gallery-arrows button svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gallery-arrows button:hover:not(:disabled) {
   background: var(--ink);
   color: var(--bg);
 }
 
+.gallery-arrows button:disabled {
+  opacity: .3;
+  cursor: default;
+}
 
 /* ==========================================================
    20. TRANSITION PROGRESS
@@ -1025,7 +1037,7 @@ body,
 
 .directory {
   position: relative;
-  padding: 115px 4.5% 45px;
+  padding: 95px 4.5% 45px;
   border-top: 1px solid var(--line);
   background: var(--bg);
   color: var(--ink);
@@ -1034,18 +1046,11 @@ body,
 /* HEADING */
 
 .directory-heading {
-  margin-bottom: 68px;
-}
-
-.directory-heading-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
+  margin-bottom: 85px;
 }
 
 .directory-heading h2 {
-  margin: 70px 0 22px;
+  margin: 0;
 
   font-family: var(--serif);
   font-size: clamp(58px, 8vw, 145px);
@@ -1061,14 +1066,6 @@ body,
   letter-spacing: -.045em;
 }
 
-.directory-heading > p {
-  max-width: 440px;
-  margin: 0;
-
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.9;
-}
 
 /* THREE-COLUMN SYSTEM */
 
@@ -1109,6 +1106,72 @@ body,
   background: var(--surface);
 }
 
+/* ==========================================================
+   DIRECTORY — CINEMATIC BACKGROUND IMAGES
+========================================================== */
+
+.directory-panel::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 68%;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  opacity: 0;
+  pointer-events: none;
+
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, .4) 35%,
+    #000 100%
+  );
+
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, .4) 35%,
+    #000 100%
+  );
+}
+
+/* ARCHIVE */
+
+.directory-panel[data-directory="archive"]::before {
+  background-image: url("../portfolio/assets/landscape.webp");
+}
+
+/* ABOUT */
+
+.directory-panel[data-directory="about"]::before {
+  background-image: url("../portfolio/assets/sunset.webp");
+}
+
+/* CONTACT */
+
+.directory-panel[data-directory="contact"]::before {
+  background-image: url("../portfolio/assets/contact.webp");
+}
+
+
+.directory-panel.is-active::before {
+  opacity: .28;
+}
+
+
+.directory-trigger,
+.directory-panel-content {
+  position: relative;
+  z-index: 1;
+}
+
 /* TRIGGER */
 
 .directory-trigger {
@@ -1130,21 +1193,15 @@ body,
   cursor: pointer;
 }
 
-.directory-index {
-  position: absolute;
-  top: 34px;
-  left: 34px;
-
-  color: var(--muted);
-}
-
 .directory-panel-title {
-  display: block;
+  position: relative;
+  top: -15px;
 
+  display: block;
   max-width: 100%;
 
   font-family: var(--serif);
-  font-size: clamp(26px, 3vw, 62px);
+  font-size: clamp(50px, 5.5vw, 110px);
   font-weight: 400;
 
   line-height: .95;
@@ -1215,17 +1272,12 @@ body,
   pointer-events: auto;
 }
 
-.directory-panel-content > .micro {
-  display: block;
-  margin-bottom: 20px;
-}
-
 .directory-panel-content h3 {
   max-width: 480px;
   margin: 0 0 20px;
 
   font-family: var(--serif);
-  font-size: clamp(32px, 3.2vw, 58px);
+  font-size: clamp(32px, 3vw, 54px);
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: -.035em;
@@ -1270,41 +1322,48 @@ body,
   line-height: 1.3;
 }
 
-/* DESTINATION LINK */
+/* DESTINATION BUTTON */
 
 .directory-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
+  justify-content: center;
 
-  width: 100%;
-  padding: 17px 0;
+  width: fit-content;
+  min-width: 210px;
 
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  padding: 17px 26px;
 
+  border: 1px solid var(--line);
+  border-radius: 0;
+
+  background: transparent;
   color: var(--ink);
 
-  font-size: 12px;
-  font-weight: 500;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
   letter-spacing: .12em;
 
+  text-align: center;
+  text-decoration: none;
+
   transition:
-    color .3s ease,
-    padding .4s var(--ease);
+    border-color .3s ease,
+    background-color .3s ease,
+    color .3s ease;
 }
 
 .directory-link:hover {
-  padding-left: 10px;
-  color: var(--menu-hover);
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bg);
 }
 
-.directory-link span:last-child {
-  font-size: 23px;
-  line-height: 1;
+.directory-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 5px;
 }
-
 
 /* ==========================================================
    SITE FOOTER
@@ -1312,7 +1371,7 @@ body,
 
 .site-footer {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr auto;
   align-items: center;
 
   width: 100%;
@@ -1418,11 +1477,6 @@ body,
     padding: 25px;
   }
 
-  .directory-index {
-    top: 25px;
-    left: 25px;
-  }
-
   .directory-symbol {
     top: 22px;
     right: 25px;
@@ -1479,11 +1533,6 @@ body,
 
   .directory-panel {
     padding: 22px;
-  }
-
-  .directory-index {
-    top: 22px;
-    left: 22px;
   }
 
   .directory-symbol {
@@ -1677,24 +1726,10 @@ body,
 
   .section-top {
     align-items: flex-start;
+    margin-bottom: 26px;
   }
-
   .section-top h2 {
     font-size: clamp(42px, 9vw, 70px);
-  }
-
-  #featuredCount {
-    display: none;
-  }
-
-  .section-desc {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .section-desc p {
-    max-width: 320px;
-    font-size: 10px;
   }
 
   .gallery-track {
@@ -1710,15 +1745,17 @@ body,
   }
 
   .gallery-bottom {
-    padding-top: 28px;
+    padding-top: 22px;
+    padding-bottom: 16px;
   }
 
   .gallery-counter {
-    font-size: 65px;
+    font-size: 13px;
   }
 
   .gallery-arrows button {
-    padding: 8px 16px;
+    width: 40px;
+    height: 40px;
   }
 
   .living-progress {
@@ -1771,18 +1808,13 @@ body,
     flex-grow: 0;
   }
 
-  .directory-index {
-    top: 22px;
-    left: 24px;
-  }
-
   .directory-symbol {
     top: 18px;
     right: 24px;
   }
 
   .directory-panel-title {
-    font-size: clamp(36px, 8vw, 56px);
+    font-size: clamp(42px, 9vw, 62px);
   }
 
   .directory-panel.is-active .directory-panel-content {
@@ -1791,7 +1823,7 @@ body,
   }
 
   .directory-panel-content h3 {
-    font-size: clamp(36px, 7vw, 52px);
+    font-size: clamp(30px, 6vw, 42px);
   }
 
   .directory-panel-content p {
@@ -1801,6 +1833,30 @@ body,
 
   .directory-tags {
     margin: 25px 0 30px;
+  }
+
+  .directory-panel::before {
+    width: 100%;
+
+    background-position: center;
+
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, .5) 45%,
+      #000 100%
+    );
+
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, .5) 45%,
+      #000 100%
+    );
+  }
+
+  .directory-panel.is-active::before {
+    opacity: .12;
   }
 
   /* EXISTING ABOUT / CONTACT */
@@ -1887,7 +1943,7 @@ body,
   }
 
   .gallery-counter {
-    font-size: 55px;
+    font-size: 12px;
   }
 
   /* HOMEPAGE DIRECTORY */
@@ -1903,11 +1959,6 @@ body,
   .directory-panel {
     min-height: 135px;
     padding: 60px 20px 22px;
-  }
-
-  .directory-index {
-    top: 20px;
-    left: 20px;
   }
 
   .directory-symbol {
@@ -2017,7 +2068,13 @@ body,
   }
 
   .gallery-arrows button {
-    padding: 7px 13px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .gallery-arrows button svg {
+    width: 18px;
+    height: 18px;
   }
 
   /* HOMEPAGE DIRECTORY */
@@ -2027,20 +2084,17 @@ body,
     padding: 55px 18px 20px;
   }
 
-  .directory-index {
-    left: 18px;
-  }
-
   .directory-symbol {
     right: 18px;
   }
 
   .directory-panel-title {
-    font-size: 36px;
+    font-size: 44px;
   }
 
   .directory-panel-content h3 {
-    font-size: 36px;
+    font-size: clamp(28px, 7vw, 36px);
+
   }
 
   .directory-panel-content p {

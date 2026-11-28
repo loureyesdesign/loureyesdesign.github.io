@@ -1,9 +1,7 @@
 
 /* ==========================================================
    LOU REYES — THE ARCHIVE
-   CINEMATIC COLLECTION INDEX
 ========================================================== */
-
 
 /* ==========================================================
    01. FONTS & VARIABLES
@@ -469,28 +467,6 @@ img {
     );
 }
 
-
-/* ==========================================================
-   07. TOP METADATA
-========================================================== */
-
-.archive-top {
-  position: absolute;
-  z-index: 8;
-
-  top: 35px;
-  left: 4.5%;
-  right: 4.5%;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-
-  color: #b1aca4;
-}
-
-
 /* ==========================================================
    08. CENTRAL TITLE
 ========================================================== */
@@ -771,14 +747,12 @@ img {
 
 .archive-closing {
   margin: 0 4.5%;
-  padding: 65px 0 100px;
-
-  border-top: 1px solid var(--line);
+  padding: 110px 0;
 }
 
 .archive-closing p {
   max-width: 1500px;
-  margin: 45px 0 65px;
+  margin: 0 0 65px;
 
   font-family: var(--serif);
   font-size: clamp(55px, 8vw, 125px);
@@ -788,17 +762,15 @@ img {
   letter-spacing: -.045em;
 }
 
+
 .archive-closing p em {
   color: var(--muted);
 }
 
 .return-home {
   display: inline-flex;
-  justify-content: space-between;
   align-items: center;
 
-  gap: 70px;
-  min-width: 220px;
   padding: 15px 0;
 
   border-bottom: 1px solid var(--ink);
@@ -806,11 +778,11 @@ img {
   font-size: 11px;
   letter-spacing: .14em;
 
-  transition: gap .4s var(--ease);
+  transition: opacity .3s ease;
 }
 
 .return-home:hover {
-  gap: 90px;
+  opacity: .6;
 }
 
 
@@ -906,11 +878,11 @@ img {
     font-size: 8px;
   }
 
-  .archive-top,
   .archive-bottom {
     left: 5%;
     right: 5%;
   }
+
 
 }
 
@@ -996,25 +968,6 @@ img {
         rgba(0, 0, 0, .35) 35%,
         rgba(0, 0, 0, .75)
       );
-  }
-
-  /* TOP METADATA */
-
-  .archive-top {
-    position: relative;
-
-    top: auto;
-    left: auto;
-    right: auto;
-
-    width: 100%;
-    padding: 28px 5% 0;
-
-    font-size: 9px;
-  }
-
-  .archive-top span:last-child {
-    display: none;
   }
 
   /* CENTRAL TITLE */
@@ -1120,7 +1073,7 @@ img {
 
   .archive-closing {
     margin: 0 5%;
-    padding: 65px 0 80px;
+    padding: 80px 0;
   }
 
   .archive-closing p {
