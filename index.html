@@ -274,24 +274,6 @@
               FEATURED <em>WORK.</em>
             </h2>
 
-            <span class="micro muted" id="featuredCount">
-              A CURATED SELECTION
-            </span>
-
-          </div>
-
-          <div class="section-desc">
-
-            <span class="micro">
-              02 — THE HIGHLIGHTS
-            </span>
-
-            <p>
-              A selection of projects that best represent my
-              approach to visual storytelling, composition,
-              and creative direction.
-            </p>
-
           </div>
 
 
@@ -325,13 +307,21 @@
                 type="button"
                 id="prevProject"
                 aria-label="Previous featured project"
-              >←</button>
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+              </button>
 
               <button
                 type="button"
                 id="nextProject"
                 aria-label="Next featured project"
-              >→</button>
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14m-7-7 7 7-7 7"/>
+                </svg>
+              </button>
 
             </div>
 
@@ -373,27 +363,10 @@
 
   <div class="directory-heading">
 
-    <div class="directory-heading-top">
-
-      <span class="micro">
-        03 — CONTINUE EXPLORING
-      </span>
-
-      <span class="micro muted">
-        THE DIRECTORY / 03 DESTINATIONS
-      </span>
-
-    </div>
-
     <h2>
       A closer
       <em>look.</em>
     </h2>
-
-    <p>
-      A closer look at the projects, the practice,
-      and the person behind them.
-    </p>
 
   </div>
 
@@ -416,10 +389,6 @@
             aria-controls="directoryArchive"
           >
 
-            <span class="directory-index micro">
-              01 / EXPLORE
-            </span>
-
             <span class="directory-panel-title">
               ARCHIVE
             </span>
@@ -435,10 +404,6 @@
             id="directoryArchive"
           >
 
-            <span class="micro muted">
-              THE COMPLETE COLLECTION
-            </span>
-
             <h3>
               A catalogue of
               <em>creative work.</em>
@@ -453,8 +418,9 @@
             <div class="directory-tags">
               <span>EDITORIAL</span>
               <span>PACKAGING</span>
+              <span>POSTERS</span>
+              <span>WEB DESIGN</span>
               <span>IDENTITY</span>
-              <span>DIGITAL</span>
               <span>PHOTOGRAPHY</span>
             </div>
 
@@ -463,7 +429,6 @@
               href="archive.html"
             >
               <span>EXPLORE THE ARCHIVE</span>
-              <span aria-hidden="true">↗</span>
             </a>
 
           </div>
@@ -487,10 +452,6 @@
             aria-controls="directoryAbout"
           >
 
-            <span class="directory-index micro">
-              02 / DISCOVER
-            </span>
-
             <span class="directory-panel-title">
               ABOUT
             </span>
@@ -506,10 +467,6 @@
             id="directoryAbout"
             inert
           >
-
-            <span class="micro muted">
-              THE PERSON & THE PRACTICE
-            </span>
 
             <h3>
               Intentional
@@ -535,7 +492,6 @@
               href="about.html"
             >
               <span>MEET THE DESIGNER</span>
-              <span aria-hidden="true">↗</span>
             </a>
 
           </div>
@@ -559,10 +515,6 @@
             aria-controls="directoryContact"
           >
 
-            <span class="directory-index micro">
-              03 / CONNECT
-            </span>
-
             <span class="directory-panel-title">
               CONTACT
             </span>
@@ -578,11 +530,6 @@
             id="directoryContact"
             inert
           >
-
-            <span class="micro muted">
-              THE NEXT CONVERSATION
-            </span>
-
             <h3>
               Every project
               <em>begins somewhere.</em>
@@ -605,14 +552,15 @@
               href="contact.html"
             >
               <span>START A CONVERSATION</span>
-              <span aria-hidden="true">↗</span>
             </a>
 
           </div>
 
-        </article>
+          </article>
 
       </div>
+
+    </section>
 
   </main>
 
@@ -627,12 +575,8 @@
       © 2026 LOU REYES
     </span>
 
-    <span class="micro muted">
-      TORONTO, CANADA
-    </span>
-
     <a href="index.html" class="micro">
-      BACK TO HOME ↗
+      BACK TO HOME 
     </a>
 
   </footer>
