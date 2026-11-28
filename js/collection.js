@@ -100,12 +100,7 @@ function renderCollectionProjects(projects) {
     const title = document.createElement("h3");
     title.textContent = project.title;
 
-    const arrow = document.createElement("span");
-    arrow.className = "collection-item-arrow";
-    arrow.textContent = "↗";
-    arrow.setAttribute("aria-hidden", "true");
-
-    info.append(title, arrow);
+    info.appendChild(title);
 
 
     /* PROJECT METADATA */
@@ -151,11 +146,8 @@ function renderCollection() {
     $("collectionDescription").textContent =
       "This collection could not be found. Return to the archive to explore the available disciplines.";
 
-    $("collectionEyebrow").textContent =
-      "THE ARCHIVE / COLLECTION UNAVAILABLE";
-
     $("collectionCount").textContent = "";
-    $("collectionTotal").textContent = "";
+
 
     return;
 
@@ -164,9 +156,6 @@ function renderCollection() {
   const projects = PROJECTS.filter(
     project => project.category === category.id
   );
-
-  const categoryIndex = CATEGORIES.indexOf(category);
-
 
   /* HERO IMAGE */
 
@@ -177,10 +166,6 @@ function renderCollection() {
 
 
   /* COLLECTION CONTENT */
-
-  $("collectionEyebrow").textContent =
-    `COLLECTION ${pad(categoryIndex + 1)} / ${pad(CATEGORIES.length)} — ${category.subtitle || "THE PRACTICE"}`;
-
   $("collectionTitle").textContent =
     category.title + ".";
 
@@ -189,10 +174,6 @@ function renderCollection() {
 
   $("collectionCount").textContent =
     `${pad(projects.length)} WORKS`;
-
-  $("collectionTotal").textContent =
-    `${pad(projects.length)} PROJECTS`;
-
 
   /* PAGE TITLE */
 

@@ -160,11 +160,6 @@ function renderFeaturedWork() {
       ` / ${projectNumber(featuredProjects.length)}`;
   }
 
-  if (featuredCount) {
-    featuredCount.textContent =
-      `${projectNumber(featuredProjects.length)} SELECTED PROJECTS`;
-  }
-
   updateGallery();
 
 }
@@ -285,6 +280,98 @@ if (nextProject) {
 
 }
 
+/* ==========================================================
+   MOBILE GALLERY SWIPE NAVIGATION
+========================================================== */
+
+if (galleryViewport) {
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let swipeDetected = false;
+
+  const SWIPE_THRESHOLD = 45;
+
+  galleryViewport.addEventListener(
+    "touchstart",
+    event => {
+
+      if (event.touches.length !== 1) return;
+
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+
+      swipeDetected = false;
+
+    },
+    { passive: true }
+  );
+
+  galleryViewport.addEventListener(
+    "touchend",
+    event => {
+
+      if (event.changedTouches.length !== 1) {
+        return;
+      }
+
+      const deltaX =
+        event.changedTouches[0].clientX - touchStartX;
+
+      const deltaY =
+        event.changedTouches[0].clientY - touchStartY;
+
+      const horizontalSwipe =
+        Math.abs(deltaX) > SWIPE_THRESHOLD &&
+        Math.abs(deltaX) > Math.abs(deltaY) * 1.5;
+
+      if (!horizontalSwipe) return;
+
+      const direction = deltaX < 0 ? 1 : -1;
+
+      const nextIndex = Math.max(
+        0,
+        Math.min(
+          featuredProjects.length - 1,
+          activeFeatured + direction
+        )
+      );
+
+      if (nextIndex === activeFeatured) return;
+
+      swipeDetected = true;
+
+      activeFeatured = nextIndex;
+      updateGallery();
+
+    },
+    { passive: true }
+  );
+
+  galleryViewport.addEventListener(
+    "touchcancel",
+    () => {
+      swipeDetected = false;
+    },
+    { passive: true }
+  );
+
+  galleryViewport.addEventListener(
+    "click",
+    event => {
+
+      if (!swipeDetected) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      swipeDetected = false;
+
+    },
+    true
+  );
+
+}
 
 /* ==========================================================
    04. IMAGE PREPARATION
@@ -693,10 +780,6 @@ function initializeLivingTransition() {
     ".section-top"
   );
 
-  const featuredDescription = featuredSection.querySelector(
-    ".section-desc"
-  );
-
   const featuredNavigation = featuredSection.querySelector(
     ".gallery-bottom"
   );
@@ -1042,9 +1125,6 @@ function initializeLivingTransition() {
     const headingReveal =
       phase(progress, .60, .72);
 
-    const descriptionReveal =
-      phase(progress, .64, .76);
-
     const galleryReveal =
       phase(progress, .68, .88);
 
@@ -1056,11 +1136,6 @@ function initializeLivingTransition() {
 
     if (featuredHeading) {
       featuredHeading.style.opacity = headingReveal;
-    }
-
-    if (featuredDescription) {
-      featuredDescription.style.opacity =
-        descriptionReveal;
     }
 
     if (featuredNavigation) {

@@ -162,7 +162,7 @@ function initializeArchiveInteraction() {
   );
 
   const defaultDescription =
-    "Explore the collections. Hover over a card to discover its contents.";
+    "Select a collection to explore its contents.";
 
   let activeCard = null;
   let titleTimer = null;

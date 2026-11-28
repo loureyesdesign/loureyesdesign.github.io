@@ -280,7 +280,8 @@ function createGalleryNavigation({
   getCount,
   onNavigate,
   isActive = () => true,
-  isBusy = () => false
+  isBusy = () => false,
+  loop = false
 }) {
 
   setGalleryArrowIcon(previous, -1);
@@ -309,7 +310,7 @@ function createGalleryNavigation({
 
     previous.disabled =
       unavailable ||
-      index <= 0 ||
+      (!loop && index <= 0) ||
       (
         activating &&
         activatedButton !== previous
@@ -317,7 +318,7 @@ function createGalleryNavigation({
 
     next.disabled =
       unavailable ||
-      index >= count - 1 ||
+      (!loop && index >= count - 1) ||
       (
         activating &&
         activatedButton !== next
@@ -413,8 +414,11 @@ function createGalleryNavigation({
       getIndex() + direction;
 
     if (
-      target < 0 ||
-      target >= getCount()
+      !loop &&
+      (
+        target < 0 ||
+        target >= getCount()
+      )
     ) {
       return false;
     }
@@ -3210,6 +3214,12 @@ function renderPosters(images, container) {
 
   const dimensions = new Map();
 
+  function wrapPosterIndex(index) {
+    return (
+      (index % images.length) + images.length
+    ) % images.length;
+  }
+
 
   /* --------------------------------------------------------
      06. IMAGE LOADING
@@ -3217,12 +3227,7 @@ function renderPosters(images, container) {
 
   async function preparePoster(index) {
 
-    if (
-      index < 0 ||
-      index >= images.length
-    ) {
-      return;
-    }
+  index = wrapPosterIndex(index);
 
     if (dimensions.has(index)) {
       return;
@@ -3258,11 +3263,12 @@ function renderPosters(images, container) {
 
     slots.forEach(({ offset, slot, button, image }) => {
 
-      const index = current + offset;
+      const index = wrapPosterIndex(
+        current + offset
+      );
 
       const available =
-        index >= 0 &&
-        index < images.length;
+        offset === 0 || images.length > 1;
 
       slot.hidden = !available;
 
@@ -3327,7 +3333,9 @@ function renderPosters(images, container) {
      08. POSTER GEOMETRY
   -------------------------------------------------------- */
 
-  function getPosterRect(index, slotIndex) {
+ function getPosterRect(index, slotIndex) {
+
+    index = wrapPosterIndex(index);
 
     const slot = slots[slotIndex].slot;
 
@@ -3388,14 +3396,12 @@ function renderPosters(images, container) {
 
     if (busy) return;
 
-    const nextIndex = current + direction;
+    if (images.length < 2) return;
 
-    if (
-      nextIndex < 0 ||
-      nextIndex >= images.length
-    ) {
-      return;
-    }
+    const nextIndex = wrapPosterIndex(
+      current + direction
+    );
+
 
     busy = true;
     navigation?.sync();
@@ -3415,10 +3421,7 @@ function renderPosters(images, container) {
         nextIndex - 1,
         nextIndex,
         nextIndex + 1
-      ].filter(index =>
-        index >= 0 &&
-        index < images.length
-      );
+      ].map(wrapPosterIndex);
 
       await Promise.all(
         [...new Set(nearby)].map(preparePoster)
@@ -3475,12 +3478,7 @@ function renderPosters(images, container) {
         toOpacity = 1
       ) {
 
-        if (
-          index < 0 ||
-          index >= images.length
-        ) {
-          return;
-        }
+        index = wrapPosterIndex(index);
 
         const poster = images[index];
 
@@ -3549,28 +3547,28 @@ function renderPosters(images, container) {
 
 
       /* ----------------------------------------------------
-         FORWARD
+        FORWARD
       ---------------------------------------------------- */
 
       if (direction > 0) {
 
-        if (current > 0) {
+        /* LEFT POSTER EXITS */
 
-          animatePoster(
-            current - 1,
-            leftRect,
-            {
-              ...leftRect,
-              left:
-                stageRect.left -
-                leftRect.width -
-                30
-            },
-            .4,
-            .4
-          );
+        animatePoster(
+          current - 1,
+          leftRect,
+          {
+            ...leftRect,
+            left:
+              stageRect.left -
+              leftRect.width -
+              30
+          },
+          .4,
+          .4
+        );
 
-        }
+        /* CENTER MOVES LEFT */
 
         animatePoster(
           current,
@@ -3580,6 +3578,8 @@ function renderPosters(images, container) {
           .4
         );
 
+        /* RIGHT MOVES TO CENTER */
+
         animatePoster(
           current + 1,
           rightRect,
@@ -3588,45 +3588,43 @@ function renderPosters(images, container) {
           1
         );
 
-        if (current + 2 < images.length) {
+        /* NEXT POSTER ENTERS FROM RIGHT */
 
-          const incoming =
-            getPosterRect(current + 2, 2);
+        const incoming =
+          getPosterRect(current + 2, 2);
 
-          animatePoster(
-            current + 2,
-            {
-              ...incoming,
-              left: stageRect.right + 30
-            },
-            incoming,
-            .4,
-            .4
-          );
-
-        }
+        animatePoster(
+          current + 2,
+          {
+            ...incoming,
+            left: stageRect.right + 30
+          },
+          incoming,
+          .4,
+          .4
+        );
 
 
       /* ----------------------------------------------------
-         BACKWARD
+        BACKWARD
       ---------------------------------------------------- */
 
       } else {
 
-        if (current + 1 < images.length) {
+        /* RIGHT POSTER EXITS */
 
-          animatePoster(
-            current + 1,
-            rightRect,
-            {
-              ...rightRect,
-              left: stageRect.right + 30
-            },
-            .4,
-            .4
-          );
+        animatePoster(
+          current + 1,
+          rightRect,
+          {
+            ...rightRect,
+            left: stageRect.right + 30
+          },
+          .4,
+          .4
+        );
 
-        }
+        /* CENTER MOVES RIGHT */
 
         animatePoster(
           current,
@@ -3636,6 +3634,8 @@ function renderPosters(images, container) {
           .4
         );
 
+        /* LEFT MOVES TO CENTER */
+
         animatePoster(
           current - 1,
           leftRect,
@@ -3644,26 +3644,24 @@ function renderPosters(images, container) {
           1
         );
 
-        if (current - 2 >= 0) {
+        /* PREVIOUS POSTER ENTERS FROM LEFT */
 
-          const incoming =
-            getPosterRect(current - 2, 0);
+        const incoming =
+          getPosterRect(current - 2, 0);
 
-          animatePoster(
-            current - 2,
-            {
-              ...incoming,
-              left:
-                stageRect.left -
-                incoming.width -
-                30
-            },
-            incoming,
-            .4,
-            .4
-          );
-
-        }
+        animatePoster(
+          current - 2,
+          {
+            ...incoming,
+            left:
+              stageRect.left -
+              incoming.width -
+              30
+          },
+          incoming,
+          .4,
+          .4
+        );
 
       }
 
@@ -3722,6 +3720,8 @@ function renderPosters(images, container) {
     getCount: () => images.length,
 
     isBusy: () => busy,
+
+    loop: true,
 
     onNavigate: direction => {
 
@@ -4102,9 +4102,6 @@ function renderWork() {
     "workPresentationLabel"
   );
 
-  const detailElement = $(
-    "workPresentationDetail"
-  );
 
   if (labelElement) {
 
@@ -4112,14 +4109,6 @@ function renderWork() {
       presentationLabel[0];
 
   }
-
-  if (detailElement) {
-
-    detailElement.textContent =
-      presentationLabel[1];
-
-  }
-
 
   /* --------------------------------------------------------
      04. PAGE CONTENT
@@ -4354,6 +4343,9 @@ function renderNextProject(project) {
 
   if (sameCategory.length <= 1) {
 
+    $("workNextLabel").textContent =
+      "CONTINUE EXPLORING";
+
     $("workNextTitle").textContent =
       "THE ARCHIVE";
 
@@ -4366,6 +4358,9 @@ function renderNextProject(project) {
     return;
 
   }
+
+  $("workNextLabel").textContent =
+    "NEXT PROJECT";
 
 
   /* --------------------------------------------------------

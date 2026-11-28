@@ -112,7 +112,7 @@ function initializeContactForm() {
   if (CONTACT_EMAIL) {
 
     emailLink.href = `mailto:${CONTACT_EMAIL}`;
-    emailLink.textContent = CONTACT_EMAIL + " ↗";
+    emailLink.textContent = CONTACT_EMAIL;
 
   } else {
 
